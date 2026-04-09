@@ -1,0 +1,24 @@
+- name: Cai nginx tren server
+  hosts: web
+  become: true
+
+  tasks:
+    - name: Cai nginx
+      dnf:
+        name: nginx
+        state: present
+
+    - name: Start nginx
+      systemd:
+        name: nginx
+        state: started
+
+    - name: Enable nginx
+      systemd:
+        name: nginx
+        enabled: yes
+
+    - name: Tao web cua toi
+      copy:
+        content: "<h1>Hello DevOps - Son Daoson</h1>"
+        dest: /usr/share/nginx/html/index.html

@@ -1,0 +1,9 @@
+---
+- name: Setup Lab Server - GitLab + MySQL + Nginx
+  hosts: lab_servers
+  become: yes
+
+  roles:
+    - mysql
+    - nginx
+    - gitlab
