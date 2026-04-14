@@ -1,4 +1,10 @@
-mysql_root_password: "MyStrongPass@123"
-mysql_db_name: "appdb"
-mysql_user_name: "appuser"
-mysql_user_password: "AppPass@123"
+---
+mysql_root_password: "Root@1234"
+mysql_port: 3306
+mysql_databases:
+  - name: demo_db
+mysql_users:
+  - name: daoson
+    password: "User@1234"
+    priv: "demo_db.*:ALL"
+

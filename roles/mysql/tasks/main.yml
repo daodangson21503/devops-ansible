@@ -1,40 +1,29 @@
 ---
-- name: Install MySQL server
+- name: Cài MySQL Server
   dnf:
-    name: mysql-server
+    name:
+      - mysql-server
+      - python3-PyMySQL
     state: present
 
-- name: Install Python MySQL library
-  dnf:
-    name: python3-PyMySQL
-    state: present
-
-- name: Start and enable MySQL
+- name: Start và enable MySQL
   service:
     name: mysqld
     state: started
     enabled: yes
 
-- name: Set MySQL root password
-  mysql_user:
-    name: root
-    password: "{{ mysql_root_password }}"
-    login_unix_socket: /var/lib/mysql/mysql.sock
-    host_all: yes
-    state: present
-
-- name: Create application database
+- name: Tạo database
   mysql_db:
-    name: "{{ mysql_db_name }}"
+    name: "{{ item.name }}"
     state: present
-    login_user: root
-    login_password: "{{ mysql_root_password }}"
+    login_unix_socket: /var/lib/mysql/mysql.sock
+  loop: "{{ mysql_databases }}"
 
-- name: Create application user
+- name: Tạo user MySQL
   mysql_user:
-    name: "{{ mysql_user_name }}"
-    password: "{{ mysql_user_password }}"
-    priv: "{{ mysql_db_name }}.*:ALL"
+    name: "{{ item.name }}"
+    password: "{{ item.password }}"
+    priv: "{{ item.priv }}"
     state: present
-    login_user: root
-    login_password: "{{ mysql_root_password }}"
+    login_unix_socket: /var/lib/mysql/mysql.sock
+  loop: "{{ mysql_users }}"

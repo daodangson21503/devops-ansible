@@ -1,17 +1,19 @@
 ---
-- name: Install Nginx
+- name: Cài đặt Nginx
   dnf:
     name: nginx
     state: present
 
-- name: Deploy Nginx config
+- name: Copy cấu hình Nginx từ template
   template:
     src: nginx.conf.j2
-    dest: /etc/nginx/conf.d/myapp.conf
+    dest: /etc/nginx/nginx.conf
+    owner: root
+    group: root
     mode: '0644'
-  notify: reload nginx
+  notify: restart nginx
 
-- name: Start and enable Nginx
+- name: Start và enable Nginx
   service:
     name: nginx
     state: started

@@ -1,1 +1,6 @@
-gitlab_external_url: "http://git.mylab.local"
+---
+gitlab_domain: "may1.local"
+gitlab_port: 8080
+gitlab_root_password: "Admin@1234"
+gitlab_version: "gitlab-ce"
+gitlab_external_url: "http://{{ gitlab_domain }}:{{ gitlab_port }}"

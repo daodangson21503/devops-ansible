@@ -1,9 +1,24 @@
 ---
-- name: Setup Lab Server - GitLab + MySQL + Nginx
-  hosts: lab_servers
+# Cài Nginx cho máy 1
+- name: Cài đặt Nginx Web Server
+  hosts: webserver
   become: yes
+  vars:
+    nginx_port: 80
+    nginx_domain: "may1.local"
+  roles:
+    - nginx
 
+# Cài MySQL cho máy 2
+- name: Cài đặt MySQL Database Server
+  hosts: dbserver
+  become: yes
   roles:
     - mysql
-    - nginx
+
+# Cài GitLab cho máy 1
+- name: Cài đặt GitLab Server
+  hosts: gitlab_server
+  become: yes
+  roles:
     - gitlab
