@@ -1,4 +1,5 @@
 *.retry
+*.save*
 vault.yml
 .vault_pass
 *.log
