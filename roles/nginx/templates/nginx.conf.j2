@@ -1,6 +1,7 @@
 events {}
 
 http {
+	include /etc/nginx/conf.d/*.conf;	
     server {
         listen {{ nginx_port | default(80) }};
         server_name {{ nginx_domain | default('localhost') }};
