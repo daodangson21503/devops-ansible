@@ -1,8 +1,102 @@
 <!DOCTYPE html>
-<html>
-<head><title>My Web - K8s Demo</title></head>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dao Dang Son - Portfolio</title>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
+    .card {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 600px;
+      width: 90%;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,0.2);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+    .avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+      margin: 0 auto 20px;
+    }
+    h1 { font-size: 2rem; margin-bottom: 8px; }
+    .role { color: #a78bfa; font-size: 1.1rem; margin-bottom: 30px; }
+    .skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+    .skill {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: bold;
+      transition: transform 0.2s;
+    }
+    .skill:hover { transform: scale(1.1); cursor: pointer; }
+    .links { display: flex; gap: 15px; justify-content: center; }
+    .btn {
+      padding: 10px 25px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: all 0.2s;
+    }
+    .btn-github { background: #333; color: white; border: 2px solid #555; }
+    .btn-docker { background: #0db7ed; color: white; }
+    .btn:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+    .deployed { margin-top: 20px; font-size: 0.8rem; color: rgba(255,255,255,0.5); }
+  </style>
+</head>
 <body>
-  <h1>Hello from Kubernetes!</h1>
-  <p>Deployed on Rocky Linux + Docker + K8s</p>
+<div id="app">
+  <div class="card">
+    <div class="avatar">👨‍💻</div>
+    <h1>{{ name }}</h1>
+    <p class="role">{{ role }}</p>
+    <div class="skills">
+      <span class="skill" v-for="skill in skills" :key="skill">{{ skill }}</span>
+    </div>
+    <div class="links">
+      <a href="https://github.com/daodangson21503" class="btn btn-github" target="_blank">GitHub</a>
+      <a href="https://hub.docker.com/u/sondd2" class="btn btn-docker" target="_blank">Docker Hub</a>
+    </div>
+    <p class="deployed"> Deployed on Docker + Kubernetes</p>
+  </div>
+</div>
+<script>
+const { createApp, ref } = Vue;
+createApp({
+  setup() {
+    const name = ref("Dao Dang Son");
+    const role = ref("Abcd");
+    const skills = ref(["Docker", "Kubernetes", "Ansible", "Jenkins"]);
+    return { name, role, skills };
+  }
+}).mount('#app');
+</script>
 </body>
 </html>
+
