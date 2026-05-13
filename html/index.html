@@ -12,9 +12,11 @@
       background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
       min-height: 100vh;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       color: white;
+      padding: 20px;
     }
     .card {
       background: rgba(255,255,255,0.1);
@@ -26,6 +28,7 @@
       text-align: center;
       border: 1px solid rgba(255,255,255,0.2);
       box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      margin-bottom: 20px;
     }
     .avatar {
       width: 100px;
@@ -68,10 +71,53 @@
     .btn-docker { background: #0db7ed; color: white; }
     .btn:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
     .deployed { margin-top: 20px; font-size: 0.8rem; color: rgba(255,255,255,0.5); }
+    /* Table styles */
+    .table-card {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 30px;
+      max-width: 600px;
+      width: 90%;
+      border: 1px solid rgba(255,255,255,0.2);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+    .table-card h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #a78bfa;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th {
+      background: rgba(102,126,234,0.5);
+      padding: 12px;
+      text-align: left;
+      border-radius: 5px;
+    }
+    td {
+      padding: 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    tr:hover td { background: rgba(255,255,255,0.05); }
+    .loading { text-align: center; color: #a78bfa; padding: 20px; }
+    .error { text-align: center; color: #ff6b6b; padding: 20px; }
+    .badge {
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+    .badge-devops { background: #667eea; }
+    .badge-developer { background: #48bb78; }
+    .badge-tester { background: #ed8936; }
   </style>
 </head>
 <body>
 <div id="app">
+  <!-- Profile Card -->
   <div class="card">
     <div class="avatar">👨‍💻</div>
     <h1>{{ name }}</h1>
@@ -83,20 +129,63 @@
       <a href="https://github.com/daodangson21503" class="btn btn-github" target="_blank">GitHub</a>
       <a href="https://hub.docker.com/u/sondd2" class="btn btn-docker" target="_blank">Docker Hub</a>
     </div>
-    <p class="deployed"> Deployed on Docker + Kubernetes</p>
+    <p class="deployed">Deployed on Docker + Kubernetes</p>
+  </div>
+
+  <!-- Users Table từ MySQL -->
+  <div class="table-card">
+    <h2> Users từ MySQL Database</h2>
+    <div v-if="loading" class="loading"> Đang tải data...</div>
+    <div v-else-if="error" class="error"> {{ error }}</div>
+    <table v-else>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Tên</th>
+          <th>Role</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="user in users" :key="user.id">
+          <td>{{ user.id }}</td>
+          <td>{{ user.name }}</td>
+          <td>
+            <span class="badge" :class="'badge-' + user.role.toLowerCase()">
+              {{ user.role }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>
+
 <script>
-const { createApp, ref } = Vue;
+const { createApp, ref, onMounted } = Vue;
 createApp({
   setup() {
     const name = ref("Dao Dang Son");
-    const role = ref("Student");
+    const role = ref("DevOps Student");
     const skills = ref(["Docker", "Kubernetes", "Ansible", "Jenkins"]);
-    return { name, role, skills };
+    const users = ref([]);
+    const loading = ref(true);
+    const error = ref(null);
+
+    onMounted(async () => {
+      try {
+        const res = await fetch('http://myapi.mylab.local/api/users');
+        if (!res.ok) throw new Error('API lỗi');
+        users.value = await res.json();
+      } catch (err) {
+        error.value = 'Không thể kết nối API: ' + err.message;
+      } finally {
+        loading.value = false;
+      }
+    });
+
+    return { name, role, skills, users, loading, error };
   }
 }).mount('#app');
 </script>
 </body>
 </html>
-

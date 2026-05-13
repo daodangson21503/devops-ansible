@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: my-web
-        image: sondd2/my-web:v2.0
-        imagePullPolicy: Always
+        image: my-web:v4.0
+        imagePullPolicy: Never
         ports:
         - containerPort: 80
