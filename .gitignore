@@ -3,3 +3,11 @@
 vault.yml
 .vault_pass
 *.log
+*.tgz
+*.tar.gz
+cri-dockerd/
+crictl
+kubectl
+minikube-linux-amd64
+cri-docker.service
+cri-docker.socket
