@@ -1,0 +1,11 @@
+---
+- name: Setup Zabbix Server on may1
+  hosts: zabbix_server
+  become: yes
+  vars:
+    db_name: zabbix
+    db_user: zabbix
+    db_password: "StrongPass123"
+    zabbix_server_ip: "10.0.2.100"
+  roles:
+    - zabbix_server
